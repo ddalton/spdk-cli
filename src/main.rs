@@ -24,22 +24,23 @@ fn main() -> std::io::Result<()> {
         params: None,
     };
 
-    let mut reqs:Vec<Request> = Vec::new();
-    reqs.push(s);
+//    let mut reqs:Vec<Request> = Vec::new();
+//    reqs.push(s);
 
 
 //    let req = format!("Request: {}", serde_json::to_string(&reqs).unwrap());
 //    println!("Request: {}", req);
 
-    let req = r###"{
-  "jsonrpc": "2.0",
-  "method": "rpc_get_methods",
-  "id": 1
-} 
-"###;
+//    let req = r###"{
+//  "jsonrpc": "2.0",
+//  "method": "rpc_get_methods",
+//  "id": 1
+//} 
+//"###;
 
     let mut stream = UnixStream::connect("/var/tmp/spdk.sock")?;
-    stream.write_all(req.as_bytes())?;
+    //stream.write_all(req.as_bytes())?;
+    stream.write_all(serde_json::to_string(&s).unwrap().as_bytes())?;
     let stream = BufReader::new(stream);
     for line in stream.lines() {
         println!("{}", line.unwrap());
